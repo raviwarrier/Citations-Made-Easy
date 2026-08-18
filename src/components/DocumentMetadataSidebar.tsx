@@ -39,11 +39,19 @@ export const DocumentMetadataSidebar: React.FC<DocumentMetadataSidebarProps> = (
   const theme = THEMES[settings.theme] || THEMES.sepia;
 
   return (
-    <aside
-      id="document-metadata-sidebar"
-      className={`w-64 border-r p-5 flex flex-col gap-6 shrink-0 font-sans select-none overflow-y-auto z-20 transition-all duration-150 ${theme.sidebarBg} ${theme.sidebarText} ${theme.sidebarBorder}`}
-    >
-      {/* Top Header / Close */}
+    <>
+      {/* Mobile Backdrop */}
+      {onClose && (
+        <div 
+          onClick={onClose}
+          className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-2xs" 
+        />
+      )}
+      <aside
+        id="document-metadata-sidebar"
+        className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] md:relative md:w-64 md:inset-auto md:z-20 border-r p-5 flex flex-col gap-6 shrink-0 font-sans select-none overflow-y-auto shadow-2xl md:shadow-none transition-all duration-150 ${theme.sidebarBg} ${theme.sidebarText} ${theme.sidebarBorder}`}
+      >
+        {/* Top Header / Close */}
       <div className={`flex items-center justify-between pb-3 border-b ${theme.sidebarBorder}`}>
         <span className={`text-[10px] uppercase tracking-widest font-bold ${theme.sidebarMuted}`}>
           Document Details
@@ -247,5 +255,6 @@ export const DocumentMetadataSidebar: React.FC<DocumentMetadataSidebarProps> = (
         </p>
       </div>
     </aside>
+    </>
   );
 };

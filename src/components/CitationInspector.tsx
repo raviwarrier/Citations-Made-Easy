@@ -101,11 +101,19 @@ export const CitationInspector: React.FC<CitationInspectorProps> = ({
   ];
 
   return (
-    <aside
-      id="citations-inspector-panel"
-      className={`w-80 md:w-96 border-l flex flex-col h-full shadow-xl z-40 transition-all duration-150 shrink-0 font-sans select-none ${theme.sidebarBg} ${theme.sidebarText} ${theme.sidebarBorder}`}
-    >
-      {/* Panel Header */}
+    <>
+      {/* Mobile Backdrop */}
+      {onClose && (
+        <div 
+          onClick={onClose}
+          className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-2xs" 
+        />
+      )}
+      <aside
+        id="citations-inspector-panel"
+        className={`fixed inset-y-0 right-0 z-50 w-80 sm:w-96 max-w-[90vw] md:relative md:w-80 md:inset-auto md:z-20 border-l flex flex-col h-full shadow-2xl md:shadow-none transition-all duration-150 shrink-0 font-sans select-none ${theme.sidebarBg} ${theme.sidebarText} ${theme.sidebarBorder}`}
+      >
+        {/* Panel Header */}
       <div className={`p-4 border-b flex justify-between items-center shrink-0 ${theme.sidebarSubtleHeaderBg} ${theme.sidebarBorder}`}>
         <div className="flex items-center gap-2">
           <h3 className={`text-[10px] uppercase font-bold tracking-widest ${theme.sidebarText}`}>
@@ -349,6 +357,7 @@ export const CitationInspector: React.FC<CitationInspectorProps> = ({
         </div>
       </div>
     </aside>
+    </>
   );
 };
 

@@ -58,24 +58,23 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
       className={`h-14 border-b flex items-center justify-between px-4 md:px-6 shrink-0 font-sans select-none z-30 transition-colors ${theme.headerBg} ${theme.headerText} ${theme.headerBorder}`}
     >
       {/* Left section: App Brand & Document Title */}
-      <div className="flex items-center gap-3 md:gap-4 min-w-0">
+      <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
         <button
           id="btn-open-doc-picker"
           onClick={onOpenDocumentPicker}
-          className={`${theme.btnPrimary} px-2.5 py-1 text-xs font-bold tracking-widest uppercase transition rounded flex items-center gap-1.5 shadow-2xs cursor-pointer`}
+          className={`${theme.btnPrimary} px-2 sm:px-2.5 py-1 text-xs font-bold tracking-wider sm:tracking-widest uppercase transition rounded flex items-center gap-1.5 shadow-2xs cursor-pointer shrink-0`}
           title="Open or Upload Document (O)"
         >
           <BookOpen className="w-3.5 h-3.5" />
-          <span>Citations Made Easy</span>
+          <span className="hidden xs:inline">Citations Made Easy</span>
+          <span className="xs:hidden">Open</span>
         </button>
 
-        <div className={`h-4 w-px ${theme.headerBorder} hidden sm:block`} />
-
-        {/* Toggle Metadata Sidebar */}
+        {/* Toggle Metadata Sidebar (Accessible on mobile & desktop) */}
         {onToggleMetaSidebar && (
           <button
             onClick={onToggleMetaSidebar}
-            className={`hidden sm:flex items-center gap-1 px-2 py-1 rounded text-[11px] font-mono border transition ${
+            className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] font-mono border transition shrink-0 ${
               isMetaSidebarOpen
                 ? `${theme.cardBg} ${theme.cardSelectedBorder} font-bold shadow-2xs`
                 : `${theme.headerBorder} hover:opacity-80 ${theme.headerMuted}`
@@ -83,13 +82,13 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
             title="Toggle Document Metadata Panel (M)"
           >
             <Sidebar className="w-3 h-3" />
-            <span>[Meta]</span>
+            <span className="hidden sm:inline">[Meta]</span>
           </button>
         )}
 
         {document && (
           <h1 
-            className="text-xs md:text-sm font-medium truncate max-w-[180px] sm:max-w-[260px] md:max-w-[360px] italic opacity-90"
+            className="text-xs md:text-sm font-medium truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[240px] md:max-w-[340px] italic opacity-90 hidden sm:block"
             title={document.title}
           >
             {document.title}
@@ -125,9 +124,9 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
       )}
 
       {/* Right section: 4-Way Theme Selector & Action Badges */}
-      <div className="flex items-center gap-3 md:gap-4">
-        {/* Segmented 4-Theme Switcher (Sepia, White, Gray, Onyx) */}
-        <div className={`flex rounded p-1 gap-1 items-center border ${theme.sidebarSubtleHeaderBg} ${theme.headerBorder}`}>
+      <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+        {/* Full Segmented 4-Theme Switcher (Tablets & Desktops) */}
+        <div className={`hidden sm:flex rounded p-1 gap-1 items-center border ${theme.sidebarSubtleHeaderBg} ${theme.headerBorder}`}>
           {(['sepia', 'paper', 'slate', 'onyx'] as const).map((tKey) => {
             const isActive = settings.theme === tKey;
             const tObj = THEMES[tKey];
@@ -147,6 +146,19 @@ export const ReaderHeader: React.FC<ReaderHeaderProps> = ({
             );
           })}
         </div>
+
+        {/* Compact Single Cycle Button for Mobile screens */}
+        <button
+          onClick={() => {
+            const themes: ReadingTheme[] = ['sepia', 'paper', 'slate', 'onyx'];
+            const nextIdx = (themes.indexOf(settings.theme) + 1) % themes.length;
+            onUpdateSettings({ theme: themes[nextIdx] });
+          }}
+          className={`sm:hidden px-2 py-1 rounded text-[10px] uppercase font-bold border transition ${theme.cardBg} ${theme.headerBorder} ${theme.cardText}`}
+          title="Tap to cycle reading themes"
+        >
+          {THEMES[settings.theme]?.label || 'Theme'}
+        </button>
 
         {/* Shortcuts & Extracts Drawer Buttons */}
         <div className="flex items-center gap-2">

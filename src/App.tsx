@@ -30,6 +30,7 @@ import { ExportModal } from './components/ExportModal';
 import { EditCitationModal } from './components/EditCitationModal';
 import { ShortcutsModal } from './components/ShortcutsModal';
 import { LocalBackupBanner } from './components/LocalBackupBanner';
+import { MobileNoticeBanner } from './components/MobileNoticeBanner';
 
 export default function App() {
   // 1. Settings state
@@ -43,9 +44,13 @@ export default function App() {
   // 3. Document Citations state (auto-loaded per document fingerprint)
   const [citations, setCitations] = useState<CitationEntry[]>([]);
 
-  // 4. Modals & Sidebars
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
-  const [isMetaSidebarOpen, setIsMetaSidebarOpen] = useState<boolean>(true);
+  // 4. Modals & Sidebars (auto-collapsed on mobile by default to maximize reader space)
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+    return typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+  });
+  const [isMetaSidebarOpen, setIsMetaSidebarOpen] = useState<boolean>(() => {
+    return typeof window !== 'undefined' ? window.innerWidth >= 1280 : true;
+  });
   const [isDocPickerOpen, setIsDocPickerOpen] = useState<boolean>(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
@@ -446,7 +451,17 @@ export default function App() {
         />
       )}
 
-      {/* 3. Main 3-Column Layout: Left Metadata Drawer + Reading Canvas + Right Extracts Panel */}
+      {/* Mobile Advisory & Quick Action Banner (visible on <768px screens until dismissed) */}
+      {!settings.focusMode && (
+        <MobileNoticeBanner
+          theme={settings.theme}
+          onOpenMeta={() => setIsMetaSidebarOpen(true)}
+          onOpenCitations={() => setIsSidebarOpen(true)}
+          citationCount={citations.length}
+        />
+      )}
+
+      {/* 3. Main Layout: Left Metadata Drawer + Reading Canvas + Right Extracts Panel */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Metadata & Controls Sidebar */}
         {isMetaSidebarOpen && !settings.focusMode && (
