@@ -13,8 +13,6 @@
 
 ## 📸 Screenshots
 
-*(Replace the image links below with your screenshots saved in `docs/screenshots/`)*
-
 | Main Reader & PDF Canvas | Capture Context & Selection Toolbar |
 | :---: | :---: |
 | ![Main Reader Canvas](docs/screenshots/01-main-reader-canvas.png)<br><sub>*Authentic PDF rendering with equations, tables & multi-column layouts*</sub> | ![Capture Context Toolbar](docs/screenshots/02-capture-context-toolbar.png)<br><sub>*Floating toolbar with [E] Extract, [C] Quick Copy, and [S] Capture Context*</sub> |
